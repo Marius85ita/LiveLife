@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapporto di Servizio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .form-section {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Rapporto di Servizio</h1>
+
+<form id="rapportoForm">
+    <!-- Militare che redige il rapporto -->
+    <div class="form-section">
+        <label for="militare">Militare che redige il rapporto:</label>
+        <select id="militare" required>
+            <option value="Col. Thiago Garcia">Col. Thiago Garcia</option>
+            <option value="Cap. Mario Merola">Cap. Mario Merola</option>
+            <option value="Mar. C. Pippo Udini">Mar. C. Pippo Udini</option>
+            <!-- Aggiungi le altre opzioni -->
+        </select>
+    </div>
+
+    <!-- Altro militare in pattuglia -->
+    <div class="form-section">
+        <label for="altroMilitare">Altro militare in pattuglia:</label>
+        <select id="altroMilitare" required>
+            <option value="Col. Thiago Garcia">Col. Thiago Garcia</option>
+            <option value="Cap. Mario Merola">Cap. Mario Merola</option>
+            <option value="Mar. C. Pippo Udini">Mar. C. Pippo Udini</option>
+            <!-- Aggiungi le altre opzioni -->
+        </select>
+    </div>
+
+    <!-- Inizio turno -->
+    <div class="form-section">
+        <label for="inizioTurno">Inizio turno:</label>
+        <input type="datetime-local" id="inizioTurno" required>
+    </div>
+
+    <!-- Fine turno -->
+    <div class="form-section">
+        <label for="fineTurno">Fine turno:</label>
+        <input type="datetime-local" id="fineTurno" required>
+    </div>
+
+    <!-- Descrizione del servizio -->
+    <div class="form-section">
+        <label for="descrizione">Descrizione del servizio svolto:</label>
+        <textarea id="descrizione" rows="5" required></textarea>
+    </div>
+
+    <!-- Invio del modulo -->
+    <button type="submit">Invia Rapporto</button>
+</form>
+
+<!-- Aggiungi lo script che invia i dati a Discord -->
+<script>
+    document.getElementById('rapportoForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // Raccogli i dati dal modulo
+        var militare = document.getElementById('militare').value;
+        var altroMilitare = document.getElementById('altroMilitare').value;
+        var inizioTurno = document.getElementById('inizioTurno').value;
+        var fineTurno = document.getElementById('fineTurno').value;
+        var descrizione = document.getElementById('descrizione').value;
+
+        // Crea il payload da inviare a Discord
+        var messaggio = {
+            content: "**Nuovo Rapporto di Servizio**\n\n" +
+                     "**Militare che redige il rapporto:** " + militare + "\n" +
+                     "**Altro militare in pattuglia:** " + altroMilitare + "\n" +
+                     "**Inizio turno:** " + inizioTurno + "\n" +
+                     "**Fine turno:** " + fineTurno + "\n" +
+                     "**Descrizione del servizio svolto:** " + descrizione
+        };
+
+        // Invia il messaggio a Discord tramite il webhook
+        fetch('https://discord.com/api/webhooks/1283901180434579496/dSTvh03KNNf4y2JpPjq0a8MavgJcIzhHfCRxEQQ-gUKyjq0nSwRu3G2XbCknc12yl7p2', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(messaggio)
+        })
+        .then(function(response) {
+            if (response.ok) {
+                alert('Rapporto inviato con successo!');
+            } else {
+                alert('Errore durante l\'invio del rapporto.');
+            }
+        })
+        .catch(function(error) {
+            console.error('Errore:', error);
+            alert('Errore durante l\'invio del rapporto.');
+        });
+    });
+</script>
+
+</body>
+</html>
